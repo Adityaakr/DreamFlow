@@ -174,7 +174,7 @@ export function EventQueryAgent({ events, market }: { events: NormalizedDexEvent
   };
 
   return (
-    <section className="bb-panel flex max-h-[430px] flex-col p-3">
+    <section className="bb-panel flex max-h-[430px] flex-col p-3 xl:h-[820px] xl:max-h-none 2xl:h-[1000px]">
       <div className="mb-2 shrink-0">
         <h2 className="bb-title">QUERY AGENT</h2>
         <p className="bb-label">NATURAL LANGUAGE FILTER OVER CURRENT MARKET</p>
@@ -215,20 +215,16 @@ export function EventQueryAgent({ events, market }: { events: NormalizedDexEvent
               key={event.id}
               type="button"
               onClick={() => setSelectedEvent(event)}
-              className="bb-focus grid w-full grid-cols-[58px_1fr] gap-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] px-2 py-1.5 text-left text-[10px] hover:border-[var(--border-strong)] hover:bg-[var(--bg-panel)]"
+              className="bb-focus grid h-16 w-full grid-cols-[70px_42px_minmax(0,1fr)] grid-rows-[18px_1fr] items-start gap-x-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] px-2 py-2 text-left text-[10px] hover:border-[var(--border-strong)] hover:bg-[var(--bg-panel)]"
             >
-              <span className="font-mono leading-4 text-[var(--text-muted)]">{formatClock(event.timestamp).replace(/\s/g, "")}</span>
-              <div className="min-w-0">
-                <div className="flex min-w-0 items-center gap-2">
-                  <span className={event.side === "bid" ? "font-black text-[var(--accent-green)]" : event.side === "ask" ? "font-black text-[var(--accent-red)]" : "font-black text-[var(--text-secondary)]"}>
-                    {sideLabel(event)}
-                  </span>
-                  <p className="truncate text-[var(--text-primary)]">{event.readable}</p>
-                </div>
-                <p className="truncate font-mono text-[var(--text-muted)]">
-                  {event.quantity !== null ? formatQuantity(event.quantity, event.base) : "--"} · {event.price !== null ? formatPrice(event.price) : "--"} · {event.owner ? shortenAddress(event.owner) : "--"}
-                </p>
-              </div>
+              <span className="row-span-2 truncate font-mono text-[8px] leading-4 text-[var(--text-muted)]">{formatClock(event.timestamp).replace(/\s/g, "")}</span>
+              <span className={`truncate text-[10px] leading-4 ${event.side === "bid" ? "font-black text-[var(--accent-green)]" : event.side === "ask" ? "font-black text-[var(--accent-red)]" : "font-black text-[var(--text-secondary)]"}`}>
+                {sideLabel(event)}
+              </span>
+              <p className="min-w-0 truncate leading-4 text-[var(--text-primary)]">{event.readable}</p>
+              <p className="col-start-3 min-w-0 truncate font-mono leading-5 text-[var(--text-muted)]">
+                {event.quantity !== null ? formatQuantity(event.quantity, event.base) : "--"} · {event.price !== null ? formatPrice(event.price) : "--"} · {event.owner ? shortenAddress(event.owner) : "--"}
+              </p>
             </button>
           ))}
         </div>
