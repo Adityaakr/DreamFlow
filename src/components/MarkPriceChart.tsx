@@ -9,20 +9,11 @@ type MarkPriceChartProps = {
   points: PricePoint[];
 };
 
-const RANGE_OPTIONS = [
-  { label: "Now", value: "now", windowMs: 2 * 60_000 },
-  { label: "10m", value: "10m", windowMs: 10 * 60_000 },
-  { label: "1h", value: "1h", windowMs: 60 * 60_000 },
-  { label: "7d", value: "7d", windowMs: 7 * 24 * 60 * 60_000 },
-] as const;
-
-type RangeValue = (typeof RANGE_OPTIONS)[number]["value"];
+const LIVE_WINDOW_MS = 2 * 60_000;
 
 export function MarkPriceChart({ points }: MarkPriceChartProps) {
-  const [range, setRange] = useState<RangeValue>("now");
-  const activeRange = RANGE_OPTIONS.find((option) => option.value === range) ?? RANGE_OPTIONS[0];
   const now = Date.now();
-  const rangedPoints = points.filter((point) => now - point.timestamp <= activeRange.windowMs);
+  const rangedPoints = points.filter((point) => now - point.timestamp <= LIVE_WINDOW_MS);
   const chartPoints = rangedPoints.length > 0 ? rangedPoints : points.slice(-1);
   const latest = points.at(-1);
   const prices = chartPoints.map((point) => point.price).filter(Number.isFinite);
@@ -62,33 +53,12 @@ export function MarkPriceChart({ points }: MarkPriceChartProps) {
       <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--border-panel)] px-3 py-2">
         <div>
           <h2 className="bb-title">MARK PRICE</h2>
-          <p className="bb-label">
-            {latest?.poolLabel ?? "MarkPriceUpdated prints only"} · {activeRange.label.toUpperCase()}
-          </p>
+          <p className="bb-label">{latest?.poolLabel ?? "MarkPriceUpdated prints only"}</p>
         </div>
-        <div className="flex items-start gap-3">
-          <div className="flex border border-[var(--border-panel)] bg-[var(--bg-terminal)] text-[11px] font-bold uppercase">
-            {RANGE_OPTIONS.map((option) => {
-              const isActive = option.value === range;
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setRange(option.value)}
-                  className={`bb-focus min-h-8 border-r border-[var(--border-panel)] px-2 last:border-r-0 ${
-                    isActive ? "bg-[var(--text-primary)] text-black" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
-          </div>
-          <p className="font-mono text-sm font-bold text-[var(--text-primary)]">{latest ? formatPrice(latest.price) : "--"}</p>
-        </div>
+        <p className="font-mono text-sm font-bold text-[var(--text-primary)]">{latest ? formatPrice(latest.price) : "--"}</p>
       </div>
 
-      <div className="h-[280px] min-w-0 p-2">
+      <div className="h-[280px] min-w-0 p-2 xl:h-[360px] 2xl:h-[420px]">
         <div ref={chartHost} className="relative h-full min-h-0 min-w-0">
           {points.length === 0 ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center border border-[var(--border-panel)] bg-[var(--bg-terminal)] p-6 text-center">
@@ -133,11 +103,6 @@ export function MarkPriceChart({ points }: MarkPriceChartProps) {
                 <ReferenceDot x={latest.time} y={latest.price} r={3} fill="#e8e8e8" stroke="#000000" strokeWidth={2} />
               ) : null}
             </LineChart>
-          ) : null}
-          {range === "7d" ? (
-            <p className="absolute bottom-2 right-2 border border-[var(--border-panel)] bg-black/80 px-2 py-1 text-[10px] uppercase text-[var(--text-muted)]">
-              Session buffer only
-            </p>
           ) : null}
         </div>
       </div>
