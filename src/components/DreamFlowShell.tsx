@@ -7,6 +7,7 @@ import { AiPulseAgent } from "@/components/AiPulseAgent";
 import { AgentSpotter } from "@/components/AgentSpotter";
 import { AnomalyFeed } from "@/components/AnomalyFeed";
 import { DeveloperProof } from "@/components/DeveloperProof";
+import { DreamFlowBrief } from "@/components/DreamFlowBrief";
 import { EventQueryAgent } from "@/components/EventQueryAgent";
 import { EventTape } from "@/components/EventTape";
 import { FlowCanvas } from "@/components/FlowCanvas";
@@ -25,6 +26,12 @@ import { useDexStream } from "@/lib/useDexStream";
 const MarkPriceChart = lazy(() =>
   import("@/components/MarkPriceChart").then((module) => ({
     default: module.MarkPriceChart,
+  })),
+);
+
+const QuoteQualityChart = lazy(() =>
+  import("@/components/QuoteQualityChart").then((module) => ({
+    default: module.QuoteQualityChart,
   })),
 );
 
@@ -99,6 +106,13 @@ export function DreamFlowShell() {
           <aside className="grid gap-2 content-start">
             <LiquidityHealth metrics={metrics} book={book} />
             <ActorFlow actors={actors} />
+            <AnomalyFeed anomalies={anomalies} />
+            <DreamFlowBrief
+              activeMarket={selectedMarket}
+              anomalyCount={anomalies.length}
+              book={book}
+              totalEvents={metrics.totalEvents}
+            />
           </aside>
 
           <section className="grid min-w-0 gap-2">
@@ -114,6 +128,18 @@ export function DreamFlowShell() {
             >
               <MarkPriceChart points={pricePoints} />
             </Suspense>
+            <Suspense
+              fallback={
+                <div className="bb-panel flex min-h-[220px] items-center justify-center p-4">
+                  <div>
+                    <p className="bb-title">QUOTE QUALITY</p>
+                    <p className="bb-label mt-1">LOADING CHART</p>
+                  </div>
+                </div>
+              }
+            >
+              <QuoteQualityChart book={book} market={selectedMarket} />
+            </Suspense>
             <FlowCanvas events={events} market={selectedMarket} />
             <OrderFlowHeatmap book={book} />
           </section>
@@ -122,7 +148,6 @@ export function DreamFlowShell() {
             <AiPulseAgent insight={pulse} evidence={pulseEvidence} />
             <AgentSpotter anomalies={anomalies} book={book} events={events} market={selectedMarket} metrics={metrics} />
             <EventQueryAgent events={events} market={selectedMarket} />
-            <AnomalyFeed anomalies={anomalies} />
           </aside>
         </div>
 
