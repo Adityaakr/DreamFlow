@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* Bloomberg Terminal - Clean B&W Design System */
+
+:root {
+  /* ── Backgrounds ── */
+  --bg-terminal: #000000;
+  --bg-panel: #080808;
+  --bg-header: #0a0a0a;
+  --bg-header-bar: #060606;
+  --bg-row-alt: #0c0c0c;
+  --bg-input: #0a0a0a;
+
+  /* ── Borders ── */
+  --border-panel: #1e1e1e;
+  --border-divider: #151515;
+  --border-strong: #2a2a2a;
+  --border-glow: rgba(255, 255, 255, 0.06);
+
+  /* ── Text ── */
+  --text-primary: #e8e8e8;
+  --text-secondary: #808080;
+  --text-muted: #4e4e4e;
+  --text-dim: #2e2e2e;
+
+  /* ── Accents — used sparingly ── */
+  --accent-blue: #5a8fb8;
+  --accent-blue-bright: #7ab0d6;
+  --accent-blue-pale: #a0c8e8;
+  --accent-blue-glow: rgba(90, 143, 184, 0.08);
+  --accent-orange: #e09030;
+  --accent-orange-dim: #a86820;
+  --accent-green: #2ecc71;
+  --accent-green-dim: rgba(46, 204, 113, 0.12);
+  --accent-red: #e74c4c;
+  --accent-red-dim: rgba(231, 76, 76, 0.12);
+  --accent-cyan: #6abfcf;
+  --accent-violet: #9a8ec8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--bg-terminal);
+  color: var(--text-primary);
+}
+
+body {
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code,
+pre,
+.font-mono {
+  font-family:
+    'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, ui-monospace, monospace;
+}
+
+button,
+summary {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-terminal);
+}
+::-webkit-scrollbar-thumb {
+  background: #222222;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #333333;
+}
+
+/* ── Bloomberg Panel ── */
+.bb-panel {
+  border: 1px solid var(--border-panel);
+  background: var(--bg-panel);
+  position: relative;
+}
+
+/* ── Bloomberg Title ── */
+.bb-title {
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Bloomberg Label ── */
+.bb-label {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Bloomberg Focus ── */
+.bb-focus {
+  outline: none;
+}
+
+.bb-focus:focus-visible {
+  box-shadow: 0 0 0 1px var(--text-secondary);
+}
+
+/* ── Bloomberg Badge ── */
+.bb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--border-panel);
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ── Top accent line ── */
+.bb-glow-top {
+  border-top: 1px solid var(--border-strong);
+}
+
+/* ── Keyline divider ── */
+.bb-keyline {
+  height: 1px;
+  background: var(--border-panel);
+}
+
+/* ── Row hover ── */
+.bb-row-hover:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* ── Pulse animation ── */
+@keyframes bb-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.bb-pulse {
+  animation: bb-pulse 2s ease-in-out infinite;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

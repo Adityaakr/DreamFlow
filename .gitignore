@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# build output
+.next/
+out/
+dist/
+tsconfig.tsbuildinfo
+
+# env
+.env
+.env.local
+.env*.local
+
+# editor / tooling
+.vscode/
+.idea/
+
+# misc
+*.log
+.DS_Store
