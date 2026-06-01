@@ -26,8 +26,8 @@ function LadderRow({ level }: { level: PriceLevel }) {
 
 export function OrderFlowHeatmap({ book }: { book: OrderBookSnapshot }) {
   return (
-    <section className="bb-panel overflow-hidden">
-      <div className="flex items-center justify-between border-b border-[var(--border-panel)] px-3 py-2">
+    <section className="bb-panel flex flex-col overflow-hidden xl:min-h-[540px] 2xl:min-h-[680px]">
+      <div className="shrink-0 flex items-center justify-between border-b border-[var(--border-panel)] px-3 py-2">
         <div>
           <h2 className="bb-title">ORDER FLOW PRESSURE</h2>
           <p className="bb-label">BEST-EFFORT RECONSTRUCTION FROM DECODED LIFECYCLE EVENTS</p>
@@ -39,12 +39,12 @@ export function OrderFlowHeatmap({ book }: { book: OrderBookSnapshot }) {
       </div>
 
       {book.activeOrders === 0 ? (
-        <div className="flex min-h-[260px] flex-col items-center justify-center px-4 text-center">
+        <div className="flex min-h-[260px] flex-1 flex-col items-center justify-center px-4 text-center">
           <p className="text-sm font-bold text-white">NO ACTIVE LEVELS RECONSTRUCTED</p>
           <p className="mt-2 text-xs text-[var(--text-secondary)]">Order book reconstruction will appear after OrderPlaced events arrive.</p>
         </div>
       ) : (
-        <div className="grid min-h-[320px] gap-0 lg:grid-cols-2">
+        <div className="min-h-0 flex-1 grid gap-0 lg:grid-cols-2">
           <div className="border-b border-[var(--border-panel)] lg:border-b-0 lg:border-r">
             <div className="grid grid-cols-[86px_1fr_88px_42px] border-b border-[var(--border-panel)] bg-[var(--bg-row-alt)] px-2 py-1 text-[10px] font-black text-[var(--accent-green)]">
               <span>BID PX</span>
@@ -70,7 +70,7 @@ export function OrderFlowHeatmap({ book }: { book: OrderBookSnapshot }) {
         </div>
       )}
 
-      <div className="border-t border-[var(--border-panel)] px-3 py-2 text-[11px] text-[var(--text-secondary)]">
+      <div className="shrink-0 border-t border-[var(--border-panel)] px-3 py-2 text-[11px] text-[var(--text-secondary)]">
         {book.confidenceReason} Precision is not overclaimed; this is a session-bound lifecycle reconstruction.
       </div>
     </section>
