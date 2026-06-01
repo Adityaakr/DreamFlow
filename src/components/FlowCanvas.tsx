@@ -130,7 +130,7 @@ export function FlowCanvas({ events, market }: { events: NormalizedDexEvent[]; m
         </div>
         <span className="text-[11px] font-bold text-[var(--text-secondary)]">{market}</span>
       </div>
-      <canvas ref={canvasRef} className="block h-[240px] w-full bg-black" aria-label="Generative visualization of live order flow" />
+      <canvas ref={canvasRef} className="block h-[240px] w-full bg-black xl:h-[320px] 2xl:h-[380px]" aria-label="Generative visualization of live order flow" />
     </section>
   );
 }
