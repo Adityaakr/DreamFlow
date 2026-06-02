@@ -12,8 +12,7 @@ DreamDEX emits rich onchain market events, but raw event logs are hard to read i
 
 The app does not generate fake order data or mock chart points. If the market is quiet or the stream does not have enough context, DreamFlow shows honest waiting and best-effort states.
 
-<img width="1486" height="698" alt="Screenshot 2026-06-02 at 2 24 40 PM" src="https://github.com/user-attachments/assets/5873d63b-4a91-4580-a4c3-a86867f39b5c" />
-
+<img width="1494" height="700" alt="Screenshot 2026-06-02 at 2 25 44 PM" src="https://github.com/user-attachments/assets/89feb676-1232-47f5-bafd-70e79c8e3c1b" />
 
 ## Project Note
 
