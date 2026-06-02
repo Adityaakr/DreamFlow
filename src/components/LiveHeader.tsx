@@ -46,7 +46,7 @@ export function LiveHeader({
           <div>
             <h1 className="text-base font-black text-[var(--text-primary)]">DREAMFLOW</h1>
             <p className="bb-label">
-              {selectedMarket}/USDso · Zero-fee, yield-bearing CLOB DEX
+              {selectedMarket}/USDso · Live DreamDEX order-flow intelligence
             </p>
           </div>
         </div>
