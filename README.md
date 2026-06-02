@@ -10,6 +10,14 @@ The starter repo streamed decoded DreamDEX order-flow events and rendered raw JS
 
 Raw JSON proves data exists. DreamFlow shows that Somnia can power real-time onchain market intelligence, agent-readable market state, and high-frequency DeFi UX from live mainnet events.
 
+## Project Note
+
+I built DreamFlow because it is useful: it helps people keep track of what is happening on DreamDEX without staring at raw event logs. This is still an initial version, but the goal is clear. DreamFlow should become a live market-intelligence surface for Somnia agents, traders, builders, and anyone who wants to feel the speed and execution quality of Somnia in real time.
+
+With another day, I would make DreamFlow more ready for Somnia agents to use autonomously. The next step would be turning the current live reads into structured agent inputs: clear market state, anomaly severity, quote quality, actor behavior, and suggested user actions that an agent can reason over safely. I would add stronger action recommendations, better alert routing, guardrails so agents can suggest or prepare actions without overclaiming what the stream proves.
+
+The biggest tradeoff was keeping the product honest instead of making it look more complete than it is. The order book is rebuilt from lifecycle events DreamFlow sees in the current session, so it is useful but not the same as a full indexer or official snapshot; with more retained stream history, it can become much more exact. I also kept the AI layer conservative: it explains the evidence in front of it instead of inventing intent, predicting prices, or filling the UI with fake stats.
+
 ## Real Data Pipeline
 
 No fake order data is generated. No mock tape is rendered. If the stream is quiet, DreamFlow shows honest waiting states.
@@ -44,7 +52,7 @@ The AI route is constrained to avoid price prediction, financial advice, invente
 
 ## Optional Database
 
-`DATABASE_URL` is reserved as an optional server-only setting for future persistence or replay. The current product is session-based and does not require a database.
+`DATABASE_URL` is reserved as an optional server-only setting for future persistence and agent memory. The current product is session-based and does not require a database.
 
 ## Tradeoffs
 
@@ -56,12 +64,12 @@ The AI route is constrained to avoid price prediction, financial advice, invente
 
 ## What I Would Do With Another Day
 
-- persistent event storage
-- replay mode
-- alert subscriptions
-- agent strategy simulator
-- market maker dashboard
-- shareable market pulse cards
+- persistent event storage for agent memory
+- agent-readable market state API
+- stronger action recommendations with risk guardrails
+- alert routing for unusual stream behavior
+- better natural-language market queries
+- market maker and agent operator views
 
 ## How This Helps Somnia
 
@@ -79,6 +87,17 @@ npm run dev
 ```
 
 Open <http://localhost:3000>.
+
+DreamFlow can run without an OpenRouter key. In that mode, Pulse Agent uses deterministic rule-based summaries from the live DreamDEX stream.
+
+To enable AI-assisted Pulse Agent summaries, add an OpenRouter key to `.env.local`:
+
+```bash
+OPENROUTER_API_KEY=your_openrouter_key_here
+OPENROUTER_MODEL=anthropic/claude-sonnet-4.5
+```
+
+The Somnia stream URLs in `.env.example` use public mainnet endpoints, so no Somnia API key is required for local development.
 
 The dev server is a small Express API host with Vite middleware. It preserves:
 
