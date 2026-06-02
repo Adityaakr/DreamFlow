@@ -136,7 +136,7 @@ export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
 
   return (
     <section className="bb-panel flex max-h-[520px] flex-col p-3">
-      <div className="mb-3 flex items-start justify-between gap-4">
+      <div className="mb-2 flex items-start justify-between gap-3">
         <div>
           <h2 className="bb-title">PULSE AGENT</h2>
           <p className="bb-label">{statusLabel}</p>
@@ -145,10 +145,19 @@ export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
           type="button"
           onClick={() => void refreshAi()}
           disabled={loading}
-          className="bb-focus inline-flex min-h-8 items-center gap-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] px-2 text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--bg-panel)] disabled:cursor-not-allowed disabled:opacity-60"
+          className="bb-focus group inline-flex min-h-8 w-[104px] items-center justify-center gap-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] px-2 text-[10px] font-black uppercase tracking-wide text-[var(--text-primary)] hover:border-[var(--border-strong)] hover:bg-[var(--bg-panel)] disabled:cursor-not-allowed disabled:text-[var(--text-secondary)]"
+          aria-busy={loading}
         >
-          <RefreshCw className={loading ? "h-3.5 w-3.5 motion-safe:animate-spin" : "h-3.5 w-3.5"} aria-hidden="true" />
-          EXPLAIN
+          {loading ? (
+            <span className="grid h-3.5 w-3.5 grid-cols-3 items-end gap-[2px]" aria-hidden="true">
+              <span className="h-1.5 bg-[var(--accent-cyan)] motion-safe:animate-pulse" />
+              <span className="h-3 bg-[var(--accent-cyan)] motion-safe:animate-pulse" style={{ animationDelay: "120ms" }} />
+              <span className="h-2 bg-[var(--accent-cyan)] motion-safe:animate-pulse" style={{ animationDelay: "240ms" }} />
+            </span>
+          ) : (
+            <RefreshCw className="h-3.5 w-3.5 transition-transform group-hover:rotate-45" aria-hidden="true" />
+          )}
+          {loading ? "THINKING" : "EXPLAIN"}
         </button>
       </div>
 
