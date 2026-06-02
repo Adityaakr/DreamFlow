@@ -87,6 +87,35 @@ function DetailRow({ label, value }: { label: string; value: string }) {
   );
 }
 
+function lifecycleRows(event: NormalizedDexEvent) {
+  if (event.type === "OrderFilled") {
+    return (
+      <>
+        <DetailRow label="Maker ID" value={event.makerOrderId ?? "Not emitted in this fill"} />
+        <DetailRow label="Taker ID" value={event.takerOrderId ?? "Not emitted in this fill"} />
+        <DetailRow label="Order ID" value={event.orderId ?? "Derived from maker/taker when available"} />
+      </>
+    );
+  }
+
+  if (event.type === "OrderPlaced") {
+    return (
+      <>
+        <DetailRow label="Order ID" value={event.orderId ?? "Not emitted in this placement"} />
+        <DetailRow label="Lifecycle Role" value="Placed order; maker/taker IDs are only available once an order is matched in a fill event." />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <DetailRow label="Order ID" value={event.orderId ?? "Not emitted for this event"} />
+      {event.makerOrderId ? <DetailRow label="Maker ID" value={event.makerOrderId} /> : null}
+      {event.takerOrderId ? <DetailRow label="Taker ID" value={event.takerOrderId} /> : null}
+    </>
+  );
+}
+
 function OrderDetailDialog({
   event,
   onClose,
@@ -148,9 +177,7 @@ function OrderDetailDialog({
             <div className="mt-2">
               <DetailRow label="Pool" value={event.poolLabel} />
               <DetailRow label="Actor" value={event.owner ?? "Unavailable"} />
-              <DetailRow label="Order ID" value={event.orderId ?? "Unavailable"} />
-              <DetailRow label="Maker ID" value={event.makerOrderId ?? "Unavailable"} />
-              <DetailRow label="Taker ID" value={event.takerOrderId ?? "Unavailable"} />
+              {lifecycleRows(event)}
               <DetailRow label="Tx Hash" value={event.raw.txHash} />
               <DetailRow label="Block" value={String(event.raw.blockNumber)} />
             </div>
