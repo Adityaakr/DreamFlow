@@ -27,6 +27,13 @@ const severityClass = {
   stressed: "text-[var(--accent-red)]",
 };
 
+const severityBorderClass = {
+  calm: "border-[var(--border-panel)]",
+  active: "border-[rgba(46,204,113,0.35)]",
+  volatile: "border-[rgba(224,144,48,0.45)]",
+  stressed: "border-[rgba(231,76,76,0.45)]",
+};
+
 export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
   const [aiOverride, setAiOverride] = useState<PulseInsight | null>(null);
   const [loading, setLoading] = useState(false);
@@ -142,14 +149,25 @@ export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-        <div className="mb-3 flex flex-wrap gap-2 text-[11px]">
-          <span className={`border border-[var(--border-panel)] px-2 py-1 font-bold ${severityClass[current.severity]}`}>{current.severity.toUpperCase()}</span>
-          <span className="border border-[var(--border-panel)] px-2 py-1 text-[var(--text-secondary)]">CONF {Math.round(current.confidence * 100)}%</span>
-          <span className="border border-[var(--border-panel)] px-2 py-1 text-[var(--text-secondary)]">{current.window.toUpperCase()}</span>
+        <div className="mb-2 grid grid-cols-3 gap-1 text-[10px]">
+          <div className={`border px-2 py-1 ${severityBorderClass[current.severity]}`}>
+            <p className="bb-label">Signal</p>
+            <p className={`mt-0.5 font-black ${severityClass[current.severity]}`}>{current.severity.toUpperCase()}</p>
+          </div>
+          <div className="border border-[var(--border-panel)] px-2 py-1">
+            <p className="bb-label">Conf</p>
+            <p className="mt-0.5 font-mono text-[var(--text-primary)]">{Math.round(current.confidence * 100)}%</p>
+          </div>
+          <div className="border border-[var(--border-panel)] px-2 py-1">
+            <p className="bb-label">Window</p>
+            <p className="mt-0.5 truncate font-mono text-[var(--text-primary)]">{current.window.toUpperCase()}</p>
+          </div>
         </div>
 
-        <h3 className="text-sm font-black text-[var(--text-primary)]">{current.headline.toUpperCase()}</h3>
-        <p className="mt-2 text-xs leading-5 text-[var(--text-secondary)]">{current.summary}</p>
+        <div className={`border p-2 ${severityBorderClass[current.severity]}`}>
+          <h3 className="text-[13px] font-black leading-5 text-[var(--text-primary)]">{current.headline.toUpperCase()}</h3>
+          <p className="mt-1 text-[11px] leading-[1.55] text-[var(--text-secondary)]">{current.summary}</p>
+        </div>
 
         <ul className="mt-3 space-y-1">
           {current.evidence.map((item) => (
