@@ -76,6 +76,10 @@ export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
   }, []);
 
   const current = aiOverride ?? insight;
+  const primaryEvidence = current.evidence.slice(0, 4);
+  const hiddenEvidenceCount = Math.max(0, current.evidence.length - primaryEvidence.length);
+  const activePools = Object.keys(evidence.pools).length;
+  const dominantEvent = Object.entries(evidence.eventTypes).sort((a, b) => b[1] - a[1])[0] ?? null;
 
   const refreshAi = useCallback(async () => {
     if (inFlight.current) return;
@@ -169,18 +173,54 @@ export function AiPulseAgent({ insight, evidence }: AiPulseAgentProps) {
           <p className="mt-1 text-[11px] leading-[1.55] text-[var(--text-secondary)]">{current.summary}</p>
         </div>
 
-        <ul className="mt-3 space-y-1">
-          {current.evidence.map((item) => (
-            <li key={item} className="border-l-2 border-[var(--border-strong)] pl-2 text-[11px] text-[var(--text-secondary)]">
-              <span className="text-[var(--text-muted)]">•</span> {item}
-            </li>
-          ))}
-        </ul>
+        <div className="mt-2 grid grid-cols-3 gap-px bg-[var(--border-panel)] text-[10px]">
+          <div className="bg-[var(--bg-terminal)] p-2">
+            <p className="bb-label">Events/s</p>
+            <p className="mt-1 font-mono text-[var(--text-primary)]">{evidence.metrics.eventsPerSecond.toFixed(2)}</p>
+          </div>
+          <div className="bg-[var(--bg-terminal)] p-2">
+            <p className="bb-label">Fills</p>
+            <p className="mt-1 font-mono text-[var(--text-primary)]">{evidence.metrics.fillsLast60s}</p>
+          </div>
+          <div className="bg-[var(--bg-terminal)] p-2">
+            <p className="bb-label">Pools</p>
+            <p className="mt-1 font-mono text-[var(--text-primary)]">{activePools}</p>
+          </div>
+        </div>
 
-        {note ? <p className="mt-3 text-xs text-[var(--accent-orange)]">{note}</p> : null}
+        <div className="mt-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] p-2">
+          <div className="flex items-center justify-between gap-2">
+            <p className="bb-title">STREAM EVIDENCE</p>
+            {dominantEvent ? (
+              <span className="truncate font-mono text-[9px] text-[var(--text-muted)]">
+                {dominantEvent[0]} x{dominantEvent[1]}
+              </span>
+            ) : null}
+          </div>
+          <ul className="mt-2 space-y-1">
+            {primaryEvidence.map((item) => (
+              <li key={item} className="grid grid-cols-[10px_1fr] gap-1 text-[10px] leading-4 text-[var(--text-secondary)]">
+                <span className="text-[var(--text-muted)]">•</span>
+                <span>{item}</span>
+              </li>
+            ))}
+            {hiddenEvidenceCount > 0 ? (
+              <li className="pl-[14px] text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
+                +{hiddenEvidenceCount} more evidence item{hiddenEvidenceCount === 1 ? "" : "s"}
+              </li>
+            ) : null}
+          </ul>
+        </div>
+
+        <div className="mt-2 border border-[var(--border-panel)] bg-[var(--bg-terminal)] p-2">
+          <p className="bb-label">Suggested check</p>
+          <p className="mt-1 text-[11px] leading-4 text-[var(--text-secondary)]">{current.suggestedUserAction}</p>
+        </div>
+
+        {note ? <p className="mt-2 border border-[rgba(224,144,48,0.35)] bg-[var(--bg-terminal)] p-2 text-[10px] leading-4 text-[var(--accent-orange)]">{note}</p> : null}
       </div>
 
-      <p className="mt-3 shrink-0 border-t border-[var(--border-panel)] pt-2 text-[11px] text-[var(--text-muted)]">
+      <p className="mt-2 shrink-0 border-t border-[var(--border-panel)] pt-2 text-[10px] leading-4 text-[var(--text-muted)]">
         <Sparkles className="mr-1 inline h-3 w-3" aria-hidden="true" />
         Grounded only in stream evidence. Not financial advice.{model ? ` Model: ${model}.` : ""}
       </p>
