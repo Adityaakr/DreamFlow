@@ -4,11 +4,16 @@ Live order-flow intelligence for Somnia DreamDEX.
 
 DreamFlow turns real DreamDEX mainnet stream events into a real-time market intelligence terminal. It keeps the live event stream intact, then adds readable analytics, agent summaries, order-flow reconstruction, anomaly detection, and a polished UI for understanding what is happening on DreamDEX as it happens.
 
+<img width="1493" height="817" alt="Screenshot 2026-06-02 at 2 24 06 PM" src="https://github.com/user-attachments/assets/dd508548-8cb4-4573-a371-b46935017206" />
+
 ## Overview
 
 DreamDEX emits rich onchain market events, but raw event logs are hard to read in real time. DreamFlow makes that stream usable by translating decoded events into a live cockpit for traders, builders, market makers, and future Somnia agents.
 
 The app does not generate fake order data or mock chart points. If the market is quiet or the stream does not have enough context, DreamFlow shows honest waiting and best-effort states.
+
+<img width="1486" height="698" alt="Screenshot 2026-06-02 at 2 24 40 PM" src="https://github.com/user-attachments/assets/5873d63b-4a91-4580-a4c3-a86867f39b5c" />
+
 
 ## Project Note
 
