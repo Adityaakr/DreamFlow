@@ -19,6 +19,14 @@ const app = express();
 
 app.use(express.json({ limit: "256kb" }));
 
+app.get("/health", (_request, response) => {
+  response.status(200).json({
+    ok: true,
+    service: "dreamflow",
+    uptime: process.uptime(),
+  });
+});
+
 app.get("/api/stream", streamDexEvents);
 app.get("/api/ai-pulse", getAiPulseStatus);
 app.post("/api/ai-pulse", postAiPulse);

@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "tsx server/index.ts",
-    "build": "vite build",
-    "start": "NODE_ENV=production tsx server/index.ts",
+    "build": "vite build && esbuild server/index.ts --bundle --platform=node --target=node20 --format=esm --packages=external --outfile=dist-server/index.mjs",
+    "start": "NODE_ENV=production node dist-server/index.mjs",
     "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.0",
@@ -29,6 +32,7 @@
     "@types/react-dom": "19.0.3",
     "@types/ws": "8.5.13",
     "@vitejs/plugin-react": "^6.0.2",
+    "esbuild": "^0.28.0",
     "tsx": "^4.22.4",
     "typescript": "5.7.3",
     "vite": "^8.0.16"

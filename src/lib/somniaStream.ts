@@ -70,6 +70,21 @@ class SomniaStream {
       } catch {
         return;
       }
+      const rpcMessage = msg as {
+        id?: number;
+        result?: unknown;
+        error?: { code?: number; message?: string };
+      };
+      if (rpcMessage.error) {
+        console.warn(
+          `[somnia] rpc error${rpcMessage.error.code ? ` ${rpcMessage.error.code}` : ""}: ${rpcMessage.error.message ?? "unknown error"}`,
+        );
+        return;
+      }
+      if (rpcMessage.id && typeof rpcMessage.result === "string") {
+        console.log(`[somnia] subscription active: ${rpcMessage.result}`);
+        return;
+      }
       const params = (msg as { params?: { result?: unknown } }).params;
       const result = params?.result as
         | {
