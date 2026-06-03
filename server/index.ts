@@ -6,6 +6,7 @@ import express from "express";
 import { createServer as createViteServer } from "vite";
 import { getAiPulseStatus, postAiPulse } from "./aiPulse";
 import { streamDexEvents } from "./stream";
+import { somniaStream } from "../src/lib/somniaStream";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(dirname, "..");
@@ -28,6 +29,9 @@ app.get("/health", (_request, response) => {
 });
 
 app.get("/api/stream", streamDexEvents);
+app.get("/api/stream-status", (_request, response) => {
+  response.json(somniaStream.getStatus());
+});
 app.get("/api/ai-pulse", getAiPulseStatus);
 app.post("/api/ai-pulse", postAiPulse);
 

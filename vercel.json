@@ -1,12 +1,15 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "functions": {
-    "api/stream.ts": {
-      "maxDuration": 60
-    }
-  },
   "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://dreamflow.adibuilds.in/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://dreamflow.adibuilds.in/health"
+    },
     {
       "source": "/((?!api/.*|health).*)",
       "destination": "/index.html"
